@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% endblock %}</title>
+  <style>
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #f7f7f7;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    header {
+        background-color: #0096c7;
+        color: #fff;
+        text-align: center;
+        padding: 12px;
+    }
+
+    footer {
+        background-color: #ccc;
+        color: #333;
+        padding: 20px;
+        text-align: center;
+    }
+
+    nav {
+        background-color: #0096c7;
+        color: #fff;
+        height: 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    nav ul li {
+        margin: 0 10px;
+    }
+
+    nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 16px;
+        padding: 15px;
+        transition: all 0.3s ease;
+    }
+
+    nav ul li a:hover {
+        background-color: #32bbe8;
+        border-radius: 4px;
+    }
+
+    nav ul li.active a {
+        background-color: #666;
+    }
+
+    nav ul li.active a:hover {
+        background-color: #999;
+    }
+
+    .username, .btn-register{
+      position: absolute;
+      right: 80px;
+    }
+
+    .btn-logout, .btn-login{
+      position: absolute;
+      right: 2px;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .search-box input[type="text"] {
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      outline: none;
+      width: 230px;
+    }
+
+    button{
+      border-radius: 0px;
+    }
+
+  .search-box button {
+    background: #005470;
+    border: none;
+    color: #fff;
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+  }
+
+  .search-box button:hover {
+    background: #01465e;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <form method="GET" action="{% url 'cars_list' %}" class="search-form">
+          <div class="search-box">
+          <input type="text" name="search" placeholder="Buscar carro...">
+          <button type="submit">
+          <svg xmlns="http://www.w3.org/2000/svg" 
+            width="20" height="20" 
+            fill="currentColor" 
+            viewBox="0 0 16 16">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 
+          3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242 
+          1.656a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+        </svg>
+        </button>
+        </div>
+        </form>
+        {% if user.is_authenticated %}
+          <li class="username">Olá, {{ user.username }}</li>
+          <li><a href="{% url 'new_car' %}">Cadastrar Carro</a></li>
+        {% endif %}
+        {% if not user.is_authenticated %}
+          <li class="btn-login"><a href="{% url 'login' %}">Login</a></li>
+          <li class="btn-register"><a href="{% url 'register' %}">Cadastre-se</a></li>
+        {% endif %}
+        {% if user.is_authenticated %}
+          <li class="btn-logout"><a href="{% url 'logout' %}">Sair</a></li>
+        {% endif %}
+        
+        <li><a href="{% url 'cars_list' %}">Carros</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Bonardi Multimarcas</p>
+  </footer>
+</body>
+</html>
