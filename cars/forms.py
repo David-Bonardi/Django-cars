@@ -4,7 +4,7 @@ from cars.models import Car
 class CarModelForm(forms.ModelForm):
   class Meta:
     model = Car
-    fields = '__all__'
+    exclude = ['owner']
 
   def clean_price(self):
     price = self.cleaned_data.get('price')

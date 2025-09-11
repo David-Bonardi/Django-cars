@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Brand(models.Model):
@@ -18,6 +19,8 @@ class Car(models.Model):
   plate = models.CharField(max_length=8, null=True, blank=True)
   price = models.FloatField(blank=True, null=True)
   photo = models.ImageField(upload_to='cars/', blank=True, null=True)
+
+  owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cars')
 
   def __str__(self):
     return self.model

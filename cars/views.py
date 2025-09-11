@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from cars.models import Car
 from cars.forms import CarModelForm
-from django.views.generic import ListView, CreateView, DetailView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
 
 class CarsListView(ListView):
@@ -25,7 +25,35 @@ class NewCarCreateView(LoginRequiredMixin, CreateView):
   template_name = 'new_car.html'
   success_url = '/cars/'
 
+  def form_valid(self, form):
+    form.instance.owner = self.request.user
+    return super().form_valid(form)
+
 class CarDetailView(DetailView):
   model = Car
   template_name = 'car_detail.html'
   context_object_name = 'car'
+
+class CarUpdateView(LoginRequiredMixin, UpdateView):
+  login_url = 'login'
+  redirect_field_name = 'next'
+
+  model = Car
+  form_class = CarModelForm
+  template_name = 'car_update.html'
+  success_url = '/cars/'
+
+  def get_queryset(self):
+    return Car.objects.filter(owner=self.request.user)
+
+
+class CarDeleteView(LoginRequiredMixin, DeleteView):
+  login_url = 'login'
+  redirect_field_name = 'next'
+
+  model = Car
+  template_name = 'car_delete.html'
+  success_url = '/cars/'
+  
+  def get_queryset(self):
+    return Car.objects.filter(owner=self.request.user)
