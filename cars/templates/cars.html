@@ -37,7 +37,7 @@
 
     .car-card img {
     width: 100%;
-    height: 200px;
+    height: 250px;
     object-fit: cover;
     }
 
@@ -70,16 +70,6 @@
         right: 40%;
     }
 
-    button[type="submit"] {
-        background-color: #005470;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s ease-in-out;
-    }
-
     .price{
         color: green;
     }
@@ -102,7 +92,11 @@
     {% for car in cars %}
         <a href="{% url 'car_detail' car.pk %}">
             <div class="car-card">
-            <img src="{{ car.photo.url }}" alt="{{ car.model }} - {{ car.brand }}">
+            {% if car.photo %}
+                <img src="{{ car.photo.url }}" alt="{{ car.model }} - {{ car.brand }}">
+            {% else %}
+                <img src="https://www.umabaloes.com/content/interfaces/cms/themes/skyline/images/noimg.jpg">
+            {% endif %}
             <h2>{{ car.brand }} {{ car.model }}</h2>
             <p><b>{{ car.factory_year }}</b> - <b class="price">{{ car.price|br_currency }}</b></p>
         </div>

@@ -44,6 +44,8 @@ class CarUpdateView(LoginRequiredMixin, UpdateView):
   success_url = '/cars/'
 
   def get_queryset(self):
+    if self.request.user.is_superuser:
+      return Car.objects.all()
     return Car.objects.filter(owner=self.request.user)
 
 
@@ -56,4 +58,6 @@ class CarDeleteView(LoginRequiredMixin, DeleteView):
   success_url = '/cars/'
   
   def get_queryset(self):
+    if self.request.user.is_superuser:
+      return Car.objects.all()
     return Car.objects.filter(owner=self.request.user)

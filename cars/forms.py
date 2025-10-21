@@ -5,6 +5,10 @@ class CarModelForm(forms.ModelForm):
   class Meta:
     model = Car
     exclude = ['owner']
+    fields = '__all__'
+    widgets = {
+        'photo': forms.ClearableFileInput(attrs={'class': 'file-input'}),
+      }
 
   def clean_price(self):
     price = self.cleaned_data.get('price')
